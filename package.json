@@ -1,10 +1,20 @@
 {
   "name": "@fcf-ebisawa/time-delta",
+  "description": "A TypeScript library for precise time duration calculations and manipulations with signed time support",
   "repository": {
     "type": "git",
     "url": "https://github.com/fcf-ebisawa/time-delta"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "keywords": [
+    "time",
+    "duration",
+    "typescript",
+    "time-calculation",
+    "time-manipulation",
+    "time-difference",
+    "time-arithmetic"
+  ],
   "type": "module",
   "files": [
     "dist"
