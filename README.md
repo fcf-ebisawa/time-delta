@@ -1,143 +1,120 @@
-# NPM Package Template
+# Time delta
 
-TypeScriptを使用したnpmパッケージ開発のためのテンプレートリポジトリです。
+A TypeScript library for time calculations. Provides functionality for calculating time differences, time arithmetic operations, and format conversions.
 
-## 機能
+## Features
 
-- ⚡️ [Vite](https://vitejs.dev/)によるビルド
-- 🎯 [TypeScript](https://www.typescriptlang.org/)による型安全性
-- ✅ [Vitest](https://vitest.dev/)によるテスト
-- 📝 [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)によるコード品質管理
-- 🚀 GitHub Actionsによる自動パブリッシュ
-- 📦 ES ModulesとCommonJSの両方をサポート
+- ⚡️ Time difference calculations and operations
+- 🎯 Type safety with TypeScript
+- ✅ Comprehensive test coverage with Vitest
+- 📦 Supports both ES Modules and CommonJS
 
-## セットアップ手順
+## Installation
 
-1. このテンプレートを使用して新しいリポジトリを作成
-2. 以下のファイルの設定を変更
-
-### package.json
-
-```json
-{
-  "name": "<package-name>", // パッケージ名を変更
-  "repository": {
-    "type": "git",
-    "url": "<repository-url>" // リポジトリURLを変更
-  },
-  "version": "0.0.0" // 初期バージョンを設定
-  // ... その他の設定は必要に応じて変更
-}
+```bash
+npm install @fcf-ebisawa/time-delta
 ```
 
-### vite.config.ts
+## Basic Usage
+
+### Calculating Time Differences
 
 ```typescript
-export default defineConfig({
-  build: {
-    lib: {
-      name: '<package-name>', // パッケージ名を変更
-      entry: {
-        main: './lib/index.ts', // エントリーポイントを必要に応じて変更
-        // 追加のエントリーポイントを設定
-      },
-    },
-  },
+import { duration, timeDiff } from '@fcf-ebisawa/time-delta';
+
+// Basic time difference calculation
+const diff = duration(new Date('2024-01-01T10:00:00'), new Date('2024-01-01T12:30:00'));
+console.log(diff.toString()); // "02:30:00.000"
+
+// Time difference calculation with options
+const roundedDiff = timeDiff(new Date('2024-01-01T10:00:00'), new Date('2024-01-01T12:30:45'), {
+  roundTo: 'hour',
 });
+console.log(roundedDiff.toString()); // "03:00:00.000"
 ```
 
-### .github/workflows/npm-publish.yml
+### Using SignedTime Class
 
-```yaml
-env:
-  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}  // NPM_TOKENをGitHubシークレットに設定
+```typescript
+import { SignedTime } from '@fcf-ebisawa/time-delta';
+
+// Creating an instance
+const time = new SignedTime(1, 30, 45, 500); // 1 hour 30 minutes 45 seconds 500 milliseconds
+console.log(time.toString()); // "01:30:45.500"
+
+// Adding time
+const time1 = new SignedTime(1, 30, 0);
+const time2 = new SignedTime(0, 45, 0);
+const sum = time1.add(time2);
+console.log(sum.toString()); // "02:15:00.000"
+
+// Custom format
+console.log(time.toString('h hours m minutes s seconds')); // "1 hours 30 minutes 45 seconds"
+
+// Comparing times
+const isGreater = time1.isGreaterThan(time2); // true
 ```
 
-## 開発手順
+## API Reference
 
-1. 依存関係のインストール
+### duration(from: DateLike, to: DateLike): SignedTime
+
+Calculates the time difference between two dates.
+
+- **Parameters**
+  - `from`: Start date/time (Date, string, or number)
+  - `to`: End date/time (Date, string, or number)
+- **Returns**: SignedTime instance
+
+### timeDiff(from: DateLike, to: DateLike, options?): SignedTime
+
+Calculates the time difference between two dates and processes it based on options.
+
+- **Parameters**
+  - `from`: Start date/time
+  - `to`: End date/time
+  - `options`:
+    - `absolute`: If true, converts the result to absolute value
+    - `roundTo`: Rounding unit ('hour' | 'minute' | 'second')
+- **Returns**: SignedTime instance
+
+### SignedTime
+
+A class representing time that provides the following features:
+
+- Time addition, subtraction, multiplication, and division
+- Time comparison
+- Format conversion
+- Rounding operations
+- Absolute value calculation
+- Sign inversion
+
+For detailed methods and properties, please refer to the JSDoc comments in the source code.
+
+## Development
 
 ```bash
+# Install dependencies
 npm install
-```
 
-2. テストの実行
+# Run tests
+npm test
+npm run test:coverage
 
-```bash
-npm test                 # テストの実行
-npm run test:coverage   # カバレッジレポートの生成
-```
+# Lint and format
+npm run lint
+npm run lint:fix
+npm run format
 
-3. リントとフォーマット
-
-```bash
-npm run lint           # リントの実行
-npm run lint:fix       # リントエラーの自動修正
-npm run format         # コードフォーマットの実行
-```
-
-4. ビルド
-
-```bash
+# Build
 npm run build
 ```
 
-## パッケージの構造
+## License
 
-```
-.
-├── lib/                    # ソースコード
-│   ├── index.ts           # メインエントリーポイント
-│   └── **/*.ts           # その他のモジュール
-│   └── **/*.spec.ts         # テストファイル
-└── dist/                  # ビルド出力（自動生成）
-    ├── es/               # ES Modules
-    ├── cjs/              # CommonJS
-    └── types/            # 型定義ファイル
-```
-
-## パッケージの使用方法
-
-### ES Modules
-
-```typescript
-import { yourFunction } from '<package-name>';
-```
-
-### CommonJS
-
-```javascript
-const { yourFunction } = require('<package-name>');
-```
-
-## パブリッシュ手順
-
-1. GitHubリポジトリの設定
-
-   - NPM_TOKENをシークレットに追加
-   - 必要に応じてブランチ保護ルールを設定
-
-2. バージョン管理とリリース
-
-   ```bash
-   npm version patch|minor|major
-   git push --follow-tags
-   ```
-
-3. GitHubでリリースを作成
-   - リリースを作成すると自動的にnpmにパブリッシュされます
-
-## 注意点
-
-- `package.json`の`"type": "module"`設定を変更する場合は、ビルド設定も適切に調整してください
-- 新しいエントリーポイントを追加する場合は、`vite.config.ts`と`package.json`の`exports`フィールドの両方を更新する必要があります
-- テストファイルは対象のソースファイルと同じディレクトリに`*.spec.ts`として配置してください
-
-## ライセンス
-
-このテンプレートは[Apache-2.0ライセンス](LICENSE)の下で公開されています。
+[Apache-2.0](LICENSE)
 
 ---
 
 > [!NOTE]
-> このREADMEは新しいパッケージ用にカスタマイズしてください。
+> Please report bugs and feature requests through GitHub Issues.
