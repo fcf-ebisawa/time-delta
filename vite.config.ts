@@ -4,10 +4,9 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   build: {
     lib: {
-      name: '<package-name>',
+      name: '@fcf-ebisawa/time-delta',
       entry: {
         main: './lib/index.ts',
-        sum: './lib/sum/index.ts',
       },
       fileName: (format, entryName) => {
         const fileName = entryName === 'main' ? 'index' : `${entryName}/index`;

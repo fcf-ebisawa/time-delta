@@ -1,10 +1,10 @@
 {
-  "name": "<package-name>",
+  "name": "@fcf-ebisawa/time-delta",
   "repository": {
     "type": "git",
-    "url": "<repository-url>"
+    "url": "https://github.com/fcf-ebisawa/time-delta"
   },
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "files": [
     "dist"
