@@ -155,7 +155,7 @@ export class SignedTime {
       .replace(/s/g, '(\\d{1,2})')
       .replace(/SSS/g, '(\\d{3})')
       .replace(/S/g, '(\\d{1,3})')
-      .replace(/[\/:.\s]/g, '\\$&');
+      .replace(/[/:.\s]/g, '\\$&');
 
     const regex = new RegExp(`^${pattern}$`);
     const match = cleanTimeString.match(regex);
@@ -402,7 +402,7 @@ export class SignedTime {
     const seconds = Math.floor((absMs % 60000) / 1000);
     const ms = absMs % 1000;
 
-    let result = format
+    const result = format
       .replace('hh', hours.toString().padStart(2, '0'))
       .replace('h', hours.toString())
       .replace('mm', minutes.toString().padStart(2, '0'))
