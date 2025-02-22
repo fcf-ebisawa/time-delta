@@ -26,11 +26,11 @@
   "types": "./dist/types/index.d.ts",
   "scripts": {
     "build": "vite build && tsc",
-    "test": "vitest",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write \"**/*.{ts,json}\"",
+    "lint": "eslint ./lib --ext .ts",
+    "lint:fix": "eslint ./lib --ext .ts --fix",
+    "format": "prettier --write \"lib/**/*.{ts,json}\"",
     "prepublishOnly": "npm run lint && npm run test && npm run build"
   },
   "devDependencies": {
